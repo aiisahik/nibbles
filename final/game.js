@@ -9,10 +9,10 @@ var scoreArea = document.getElementById('score');
 var score = 0;
 var blockWidth = 10;
 var food;
-var gameSpeed = 100;
+var gameSpeed;
 
 //////// CREATE THE SNAKE ///////
-var direction = "right";
+var direction;
 var startingSnakeLength = 5;
 var snakeArray = []; //an array of {left: position from left, top: position from top} 
 var gameLoop;
@@ -56,6 +56,8 @@ function renderFrame (){
 		top: snakeArray[0].top,
 	};
 
+	var newGameSpeed = gameSpeed;
+
 	// change the direction of the snake if needed
 	if(direction == "right") {
 		snakeHead.left += blockWidth;
@@ -71,8 +73,8 @@ function renderFrame (){
 	snakeArray.unshift(snakeHead);
 
 	// check collision 
-	if (snakeHead.top < 0 || snakeHead.top > gameHeight || 
-		snakeHead.left < 0 || snakeHead.left > gameWidth){
+	if (snakeHead.top < 0 || snakeHead.top  >= gameHeight || 
+		snakeHead.left < 0 || snakeHead.left  >= gameWidth){
 
 		// snake collided with walls. End the game! 
 		endGame();
@@ -96,6 +98,8 @@ function renderFrame (){
 		score += 1;
 		// reset the food location but allow tail to stay thereby growing the snake 
 		createFood();
+		newGameSpeed = gameSpeed * 0.9;
+
 	} else {
 		// remove tail, do not grow the snake
 		snakeArray.pop();
@@ -106,6 +110,13 @@ function renderFrame (){
 	drawSnake();
 	drawFood();
 	scoreArea.innerHTML = "score: " + score; 
+
+	if (newGameSpeed !== gameSpeed){
+		gameSpeed = newGameSpeed;
+		clearInterval(gameLoop);
+		console.log('updated game speed: ', gameSpeed);
+		gameLoop = setInterval(renderFrame, gameSpeed);
+	}
 }
 
 //////// DRAW EVERYTHING FOR EVERY FRAME ///////
@@ -132,14 +143,14 @@ function detectKeys(e){
 	if (key == 32){
 		newGame();
 	}
-	if (key == 13 ){
-		gameSpeed = 1000;
-	}
 };
 document.onkeydown = detectKeys;
 
 // start the game 
 function newGame(){
+	direction = "right";
+	gameSpeed = 100;
+	gameArea.innerHTML = "";
 	score = 0;
 	// create the snake Array 
 	snakeArray = [];
