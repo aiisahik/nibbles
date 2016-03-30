@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html ng-app="nibbles">
+	<head>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+		<link type="text/css" rel="stylesheet" href="styles.css" />
+	</head>
+	<body>
+		<div class="container">
+			<div ng-controller="gamePageController as gameView" class="row">
+				<div id="gamearea" class="col-xs-5">
+					<div ng-repeat="snakeBlock in gameView.snake" ng-controller="snakeBlockController as blockView">
+						<div class="block snake" ng-style="blockView.snakeStyle"></div>
+					</div>
+				</div>
+
+				<div class="col-xs-5">
+					<br> 
+					<h3>Snake Data: </h3>
+					<form name="nibblesForm" class="nibblesForm">
+						[
+						<div ng-repeat="snakeBlockData in gameView.snakeData track by $index" style="margin-left:20px;">
+							<label>{ left: <input type="text" class="form-control" ng-model="snakeBlockData.left"> px, </label>
+							<label>top: <input type="text" class="form-control" ng-model="snakeBlockData.top"> px } </label>
+							, 
+								<a class="btn btn-danger btn-xs pull-right" ng-click="gameView.removeData($index)" style="margin-top:8px;"><i class="fa fa-trash"></i></a>
+						</div>	
+						<a class="btn btn-success btn-xs pull-right" ng-click="gameView.addData()" style="margin-top:8px;"><i class="fa fa-plus"></i></a>
+						<br>
+						]
+					</form>
+					<br><br>
+					<a class="btn btn-primary pull-left" ng-click="gameView.reset()">Reset Data</a>
+					<a class="btn btn-primary pull-right" ng-click="gameView.move()">Update / Move</a>
+				</div>
+			</div>
+		</div>
+		<script src="https://cdn.jsdelivr.net/lodash/4.6.1/lodash.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-animate.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-touch.min.js"></script>
+		<script type="text/javascript" src="ui-bootstrap-tpls-1.2.5.min.js"></script>
+		<script type="text/javascript" src="app.js"></script>
+	</body>
+</html>
